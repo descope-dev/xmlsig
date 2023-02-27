@@ -19,7 +19,7 @@ type Child struct {
 }
 
 func TestCanonicalization(t *testing.T) {
-	element := &Root{B: "1", A: "2", C: "3&", Child: Child{Data: "data"}}
+	element := &Root{B: "1&", A: "2", C: "3&", Child: Child{Data: "data"}}
 	// Go's default encoder would produce the following
 	// <root xmlns="tns" b="1" xmlns:attr="http://someotherns/for/attr" attr:a="2" xmlns:be="anotherns/be" be:a="3"><child xmlns="tns">data</child></root>
 	// It should produce
@@ -29,7 +29,7 @@ func TestCanonicalization(t *testing.T) {
 		t.Fatal(err)
 	}
 	actual := string(data)
-	expected := `<root xmlns="tns" xmlns:attr="http://someotherns/for/attr" xmlns:be="anotherns/be" b="1" be:a="3&amp;" attr:a="2"><child>data</child></root>`
+	expected := `<root xmlns="tns" xmlns:attr="http://someotherns/for/attr" xmlns:be="anotherns/be" b="1&amp;" be:a="3&amp;" attr:a="2"><child>data</child></root>`
 	if actual != expected {
 		t.Fatalf("expected output of %s but got %s", expected, actual)
 	}
